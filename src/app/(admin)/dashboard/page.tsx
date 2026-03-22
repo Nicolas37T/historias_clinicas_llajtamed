@@ -64,7 +64,7 @@ export default function AdminDashboard() {
       {/* Admin Header (Branded Navy) */}
       <div className="w-full bg-[#002D5B] text-white shadow-2xl sticky top-0 z-50 overflow-hidden">
         <div className="h-1.5 w-full brand-gradient opacity-80" />
-        <div className="container mx-auto py-5 px-6 max-w-6xl flex justify-between items-center relative">
+        <div className="container mx-auto py-5 px-6 max-w-7xl flex justify-between items-center relative">
           <div className="flex items-center gap-4">
             <div className="bg-white/10 p-2.5 rounded-2xl backdrop-blur-md border border-white/20">
               <LayoutDashboard className="w-7 h-7 text-amber-400" />
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="container mx-auto mt-12 px-6 max-w-6xl animate-in">
+      <div className="container mx-auto mt-12 px-6 max-w-7xl animate-in">
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#002D5B]/5 border border-[#002D5B]/10 text-[#002D5B] text-[10px] font-black uppercase tracking-widest mb-3">

@@ -21,7 +21,9 @@ import {
   Save,
   ChevronRight,
   ShieldAlert,
-  FileText
+  FileText,
+  Zap,
+  Waves
 } from 'lucide-react'
 
 export default function DetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -76,10 +78,10 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
 
   return (
     <div className="min-h-screen bg-slate-50/70 pb-24">
-      {/* Detail Header (Branded Navy) */}
+      {/* Detail Header */}
       <div className="w-full bg-[#002D5B] text-white shadow-2xl sticky top-0 z-50 overflow-hidden">
         <div className="h-1.5 w-full brand-gradient opacity-80" />
-        <div className="container mx-auto py-5 px-6 max-w-5xl flex justify-between items-center relative">
+        <div className="container mx-auto py-5 px-6 max-w-7xl flex justify-between items-center relative">
           <Button variant="ghost" onClick={() => router.back()} className="font-black gap-3 text-white/60 hover:text-white hover:bg-white/10 transition-all uppercase text-xs tracking-widest">
             <ArrowLeft className="w-5 h-5 text-amber-400" /> <span className="hidden sm:inline">Volver</span>
           </Button>
@@ -103,10 +105,10 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
 
-      <div className="container mx-auto mt-12 px-6 max-w-5xl animate-in">
+      <div className="container mx-auto mt-12 px-6 max-w-7xl animate-in">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
           
-          {/* Main Content - Clinical Report Style */}
+          {/* Main Content */}
           <div className="flex-1 space-y-10 w-full">
             <Section title="Evaluación Sociodemográfica" icon={<User />}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-10">
@@ -126,13 +128,13 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#002D5B] mb-3 ml-1 flex items-center gap-2">
                     <ShieldAlert className="w-4 h-4 text-amber-500" /> Motivo Principal de Consulta
                   </h4>
-                  <div className="p-6 bg-slate-50/80 rounded-[2rem] border border-slate-200 font-bold text-[#002D5B] text-lg leading-relaxed shadow-inner italic">
+                  <div className="p-6 bg-slate-50/80 rounded-[2rem] border border-slate-300 font-bold text-[#002D5B] text-lg leading-relaxed shadow-inner italic">
                     {history.motivo_consulta || 'N/A'}
                   </div>
                 </div>
                 <div>
                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 ml-1">Historia Cronológica de la Enfermedad Actual</h4>
-                  <div className="p-8 bg-white rounded-[2rem] border border-slate-100 text-slate-600 font-medium leading-[1.8] shadow-sm whitespace-pre-wrap">
+                  <div className="p-8 bg-white rounded-[2rem] border border-slate-300 text-slate-600 font-medium leading-[1.8] shadow-sm whitespace-pre-wrap">
                     {history.enfermedad_actual || 'Sin registros médicos detallados.'}
                   </div>
                 </div>
@@ -166,13 +168,14 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
               </div>
             </Section>
 
+            {/* Redesigned Vital Signs Grid */}
             <Section title="Monitorización de Signos Vitales" icon={<HeartPulse />}>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <VitalBox label="Peso" value={history.peso} unit="kg" color="amber" />
-                <VitalBox label="Talla" value={history.talla} unit="m" color="amber" />
-                <VitalBox label="P. Arterial" value={history.tension_arterial} color="red" />
-                <VitalBox label="F.C." value={history.frecuencia_cardiaca} unit="lpm" color="red" />
-                <VitalBox label="Temperatura" value={history.temperatura} unit="°C" color="red" />
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <VitalBox label="Peso Corporal" value={history.peso} unit="kg" icon={<Waves className="w-4 h-4" />} color="amber" />
+                <VitalBox label="Talla / Altura" value={history.talla} unit="m" icon={<Waves className="w-4 h-4" />} color="amber" />
+                <VitalBox label="P. Arterial" value={history.tension_arterial} icon={<HeartPulse className="w-4 h-4" />} color="red" />
+                <VitalBox label="Frec. Cardiaca" value={history.frecuencia_cardiaca} unit="lpm" icon={<Activity className="w-4 h-4" />} color="red" />
+                <VitalBox label="Temperatura" value={history.temperatura} unit="°C" icon={<Stethoscope className="w-4 h-4" />} color="red" />
               </div>
             </Section>
 
@@ -190,13 +193,13 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
                     <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#002D5B] ml-2 flex items-center gap-2">
                        <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> Plan de Tratamiento
                     </h4>
-                    <div className="p-8 bg-white border border-slate-100 rounded-[2rem] shadow-sm text-base font-bold text-slate-700 leading-relaxed min-h-[160px]">
+                    <div className="p-8 bg-white border border-slate-300 rounded-[2rem] shadow-sm text-base font-bold text-slate-700 leading-relaxed min-h-[160px]">
                       {history.plan_tratamiento || '-'}
                     </div>
                   </div>
                   <div className="space-y-3">
                     <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Observaciones Clínicas</h4>
-                    <div className="p-8 bg-slate-50/50 border border-slate-100 rounded-[2rem] shadow-inner text-base font-medium text-slate-500 leading-relaxed min-h-[160px]">
+                    <div className="p-8 bg-slate-50/50 border border-slate-300 rounded-[2rem] shadow-inner text-base font-medium text-slate-500 leading-relaxed min-h-[160px]">
                       {history.observaciones || '-'}
                     </div>
                   </div>
@@ -205,7 +208,7 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
             </Section>
           </div>
 
-          {/* Branded Sidebar - Admin Control */}
+          {/* Branded Sidebar */}
           <div className="w-full lg:w-96 sticky top-28 space-y-10">
             <Card className="border-0 shadow-2xl shadow-blue-900/10 bg-white rounded-[2.5rem] overflow-hidden group">
               <CardHeader className="bg-[#002D5B]/[0.02] border-b border-slate-50 pt-10 pb-8 text-center px-10">
@@ -278,38 +281,27 @@ function InfoItem({ label, value, fullWidth, className }: { label: string; value
   return (
     <div className={`space-y-2 ${fullWidth ? 'col-span-full' : ''}`}>
       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 block ml-2">{label}</span>
-      <div className={`text-base font-black text-[#002D5B] bg-slate-50/70 p-4 px-6 rounded-2xl border border-slate-100 group-hover:border-[#002D5B]/10 transition-colors ${className}`}>
+      <div className={`text-base font-black text-[#002D5B] bg-slate-50/70 p-4 px-6 rounded-2xl border border-slate-300 group-hover:border-[#002D5B]/20 transition-colors ${className}`}>
         {value || '-'}
       </div>
     </div>
   )
 }
 
-function VitalBox({ label, value, unit, color }: { label: string; value: any; unit?: string; color: 'amber' | 'red' }) {
-  const colorClass = color === 'amber' ? 'text-amber-500' : 'text-red-500'
+function VitalBox({ label, value, unit, icon, color }: { label: string; value: any; unit?: string; icon?: React.ReactNode; color: 'amber' | 'red' }) {
+  const colorClass = color === 'amber' ? 'text-amber-500 border-amber-100 bg-amber-50/30' : 'text-red-500 border-red-100 bg-red-50/30'
   
   return (
-    <div className="p-6 bg-white border border-slate-100 rounded-[2rem] shadow-sm text-center group/vital hover:shadow-md transition-all">
-      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 truncate">{label}</p>
-      <div className={`text-2xl font-black tracking-tighter ${colorClass} group-hover/vital:scale-110 transition-transform`}>
-        {value || '-'} <span className="text-xs text-slate-300 ml-0.5">{unit}</span>
+    <div className={`p-8 rounded-[2.5rem] shadow-sm text-center group/vital hover:shadow-md transition-all border-2 ${colorClass}`}>
+      <div className="flex justify-center mb-3">
+        <div className="p-2 rounded-xl bg-white/80 shadow-sm">
+          {icon}
+        </div>
+      </div>
+      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 truncate">{label}</p>
+      <div className={`text-3xl font-black tracking-tighter group-hover/vital:scale-110 transition-transform`}>
+        {value || '-'} <span className="text-xs opacity-60 ml-0.5">{unit}</span>
       </div>
     </div>
-  )
-}
-
-function Zap({ className }: { className?: string }) {
-  return (
-    <svg 
-      className={className} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    >
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-    </svg>
   )
 }
