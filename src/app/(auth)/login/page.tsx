@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
+import { LogIn, UserPlus, Info, AlertTriangle, ShieldCheck } from 'lucide-react'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -54,27 +55,32 @@ function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-      <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-3xl font-extrabold tracking-tight text-primary">Bienvenido</CardTitle>
-        <CardDescription className="text-sm font-medium">
-          Ingresa tus credenciales para acceder al sistema
-        </CardDescription>
+    <Card className="w-full max-w-md shadow-2xl border-0 bg-white/70 backdrop-blur-xl rounded-[2.5rem] overflow-hidden animate-in">
+      <CardHeader className="space-y-4 text-center pt-10 pb-6">
+        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-2 shadow-inner">
+          <ShieldCheck className="w-10 h-10" />
+        </div>
+        <div className="space-y-1">
+          <CardTitle className="text-4xl font-black tracking-tight text-slate-900 leading-none">Bienvenido</CardTitle>
+          <CardDescription className="text-sm font-bold text-muted-foreground uppercase tracking-widest pt-1">
+            Plataforma LlajtaMed
+          </CardDescription>
+        </div>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleLogin} className="space-y-5">
+      <CardContent className="px-8 pb-8">
+        <form onSubmit={handleLogin} className="space-y-6">
           {message && (
-            <div className="bg-blue-50 p-3 rounded-md text-blue-700 text-sm font-medium border border-blue-100 flex items-center gap-2">
-              <span className="shrink-0">ℹ️</span> {message}
+            <div className="bg-primary/5 p-4 rounded-2xl text-primary text-xs font-bold border border-primary/10 flex items-center gap-3 animate-in">
+              <Info className="w-5 h-5 shrink-0" /> {message}
             </div>
           )}
           {error && (
-            <div className="bg-destructive/15 p-3 rounded-md text-destructive text-sm font-medium border border-destructive/20 flex items-center gap-2">
-              <span className="shrink-0">⚠️</span> {error}
+            <div className="bg-destructive/5 p-4 rounded-2xl text-destructive text-xs font-bold border border-destructive/10 flex items-center gap-3 animate-in">
+              <AlertTriangle className="w-5 h-5 shrink-0" /> {error}
             </div>
           )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Correo Electrónico</Label>
+          <div className="space-y-2.5">
+            <Label htmlFor="email" className="text-[11px] font-black uppercase tracking-wider text-slate-400 ml-1">Correo Electrónico</Label>
             <Input
               id="email"
               type="email"
@@ -82,13 +88,11 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-white/50 focus:bg-white transition-all h-11"
+              className="bg-white/50 focus:bg-white border-slate-100 transition-all h-12 rounded-xl font-medium"
             />
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Contraseña</Label>
-            </div>
+          <div className="space-y-2.5">
+            <Label htmlFor="password" dangerouslySetInnerHTML={{ __html: 'Contraseña' }} className="text-[11px] font-black uppercase tracking-wider text-slate-400 ml-1" />
             <Input
               id="password"
               type="password"
@@ -96,28 +100,33 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-white/50 focus:bg-white transition-all h-11"
+              className="bg-white/50 focus:bg-white border-slate-100 transition-all h-12 rounded-xl"
             />
           </div>
           <Button
             type="submit"
-            className="w-full font-bold shadow-sm hover:shadow-md transition-all h-11 text-base bg-primary hover:bg-primary/90"
+            className="w-full font-black shadow-xl shadow-primary/30 hover:shadow-primary/40 transition-all h-14 rounded-2xl text-lg bg-primary hover:bg-primary/90 gap-2"
             disabled={loading}
           >
-            {loading ? 'Verificando...' : 'Iniciar Sesión'}
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <LogIn className="w-5 h-5" />
+            )}
+            {loading ? 'Verificando...' : 'Entrar al Sistema'}
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-4 text-center">
-        <p className="text-sm text-balance text-muted-foreground">
-          ¿Eres estudiante y no tienes cuenta?{' '}
-          <Link href="/register" className="text-primary font-bold hover:underline decoration-2 underline-offset-4">
-            Regístrate aquí
+      <CardFooter className="flex flex-col space-y-6 text-center bg-slate-50/50 py-8 px-8 border-t border-slate-100">
+        <p className="text-sm text-slate-600 font-medium">
+          ¿Aún no tienes cuenta?{' '}
+          <Link href="/register" className="text-primary font-black hover:underline underline-offset-4 flex items-center justify-center gap-1.5 mt-1 transition-all hover:gap-2">
+            Regístrate aquí <UserPlus className="w-4 h-4" />
           </Link>
         </p>
-        <div className="pt-4 border-t border-muted w-full">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
-            Sistema LlajtaMed © 2026
+        <div className="w-full">
+          <p className="text-[9px] uppercase tracking-[0.2em] text-slate-300 font-black">
+            Clinical History Engine v1.0
           </p>
         </div>
       </CardFooter>
@@ -127,8 +136,12 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-      <Suspense fallback={<div className="animate-pulse font-bold text-primary">Cargando...</div>}>
+    <div className="flex min-h-screen items-center justify-center bg-transparent p-4 relative overflow-hidden">
+      {/* Background blobs for depth */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
+      
+      <Suspense fallback={<div className="animate-pulse font-black text-primary tracking-widest uppercase">Cargando...</div>}>
         <LoginForm />
       </Suspense>
     </div>

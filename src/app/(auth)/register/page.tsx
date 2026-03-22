@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
+import { UserPlus, ArrowLeft, Mail, Lock, User, IdCard, ShieldCheck } from 'lucide-react'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -16,6 +17,7 @@ export default function RegisterPage() {
   const [carnet, setCarnet] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
   const router = useRouter()
   const supabase = createClient()
 
@@ -31,8 +33,8 @@ export default function RegisterPage() {
         data: {
           full_name: fullName,
           carnet: carnet,
-        },
-      },
+        }
+      }
     })
 
     if (signUpError) {
@@ -41,90 +43,111 @@ export default function RegisterPage() {
       return
     }
 
-    // El trigger en PostgreSQL creará automáticamente el perfil del estudiante
-    router.push('/login?message=Registro exitoso. Revisa tu correo para confirmar si es necesario.')
+    router.push('/login?message=Registro exitoso. Ahora puedes iniciar sesión.')
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-      <Card className="w-full max-w-md shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold tracking-tight text-primary">Crear Cuenta</CardTitle>
-          <CardDescription>
-            Sistema de Historia Clínica - Estudiantes
-          </CardDescription>
+    <div className="flex min-h-screen items-center justify-center bg-transparent p-4 relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <Card className="w-full max-w-lg shadow-2xl border-0 bg-white/70 backdrop-blur-xl rounded-[2.5rem] overflow-hidden animate-in">
+        <CardHeader className="space-y-4 text-center pt-10 pb-6 px-8">
+          <div className="mx-auto w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-2 shadow-inner">
+            <UserPlus className="w-8 h-8" />
+          </div>
+          <div className="space-y-1">
+            <CardTitle className="text-3xl font-black tracking-tight text-slate-900 leading-none">Registro Estudiantil</CardTitle>
+            <CardDescription className="text-sm font-bold text-muted-foreground uppercase tracking-widest pt-1">
+              Únetea la Red LlajtaMed
+            </CardDescription>
+          </div>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleRegister} className="space-y-4">
+        <CardContent className="px-10 pb-8">
+          <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {error && (
-              <div className="bg-destructive/15 p-3 rounded-md text-destructive text-sm font-medium border border-destructive/20">
+              <div className="col-span-full bg-destructive/5 p-4 rounded-2xl text-destructive text-xs font-bold border border-destructive/10 animate-in">
                 {error}
               </div>
             )}
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Nombre Completo</Label>
+            
+            <FormItem label="Nombre Completo" icon={<User className="w-3.5 h-3.5" />}>
               <Input
-                id="fullName"
-                placeholder="Juan Pérez"
+                placeholder="Ej. Juan Pérez"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="bg-white/50 focus:bg-white transition-all"
+                className="bg-white/50 h-12 rounded-xl border-slate-100 font-medium"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="carnet">Carnet Universitario / CI</Label>
+            </FormItem>
+
+            <FormItem label="Carnet de Identidad" icon={<IdCard className="w-3.5 h-3.5" />}>
               <Input
-                id="carnet"
-                placeholder="12345678"
+                placeholder="1234567 LP"
                 value={carnet}
                 onChange={(e) => setCarnet(e.target.value)}
                 required
-                className="bg-white/50 focus:bg-white transition-all"
+                className="bg-white/50 h-12 rounded-xl border-slate-100 font-medium"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Correo Electrónico</Label>
+            </FormItem>
+
+            <FormItem label="Email Universitario" icon={<Mail className="w-3.5 h-3.5" />}>
               <Input
-                id="email"
                 type="email"
-                placeholder="estudiante@uajms.edu"
+                placeholder="estudiante@u.edu.bo"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-white/50 focus:bg-white transition-all"
+                className="bg-white/50 h-12 rounded-xl border-slate-100 font-medium"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
+            </FormItem>
+
+            <FormItem label="Contraseña" icon={<Lock className="w-3.5 h-3.5" />}>
               <Input
-                id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-white/50 focus:bg-white transition-all"
+                className="bg-white/50 h-12 rounded-xl border-slate-100"
               />
-            </div>
+            </FormItem>
+
             <Button
               type="submit"
-              className="w-full font-semibold shadow-sm hover:shadow-md transition-all h-11"
+              className="col-span-full mt-4 font-black shadow-xl shadow-primary/20 transition-all h-14 rounded-2xl text-lg bg-primary hover:bg-primary/90 gap-2"
               disabled={loading}
             >
-              {loading ? 'Registrando...' : 'Registrarse como Estudiante'}
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <ShieldCheck className="w-5 h-5" />
+              )}
+              {loading ? 'Procesando...' : 'Crear mi Cuenta'}
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4 text-center">
-          <p className="text-sm text-muted-foreground">
+        <CardFooter className="flex flex-col space-y-6 text-center bg-slate-50/50 py-8 px-8 border-t border-slate-100">
+          <p className="text-sm text-slate-600 font-medium">
             ¿Ya tienes una cuenta?{' '}
-            <Link href="/login" className="text-primary font-semibold hover:underline decoration-2 underline-offset-4">
-              Iniciar Sesión
+            <Link href="/login" className="text-primary font-black hover:underline underline-offset-4 flex items-center justify-center gap-1.5 mt-1 transition-all hover:gap-1">
+              <ArrowLeft className="w-4 h-4" /> Iniciar Sesión
             </Link>
           </p>
         </CardFooter>
       </Card>
+    </div>
+  )
+}
+
+function FormItem({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div className="space-y-2">
+      <Label className="text-[11px] font-black uppercase tracking-wider text-slate-400 ml-1 flex items-center gap-1.5">
+        {icon} {label}
+      </Label>
+      {children}
     </div>
   )
 }
