@@ -111,7 +111,7 @@ export default function HistoriaPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="personales" className="space-y-6">
+      <Tabs defaultValue="personales" className="flex flex-col space-y-6">
         <TabsList className="grid grid-cols-2 md:grid-cols-5 h-auto p-1 bg-white border shadow-sm rounded-xl overflow-hidden">
           <TabsTrigger value="personales" className="py-2.5 font-bold data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-all">Personales</TabsTrigger>
           <TabsTrigger value="motivo" className="py-2.5 font-bold data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg transition-all">Motivo</TabsTrigger>
