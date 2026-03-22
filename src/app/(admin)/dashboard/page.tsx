@@ -92,7 +92,7 @@ export default function AdminDashboard() {
           />
         </div>
         <div className="w-full md:w-48">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v ?? 'todos')}>
             <SelectTrigger className="h-11 border-slate-200 font-bold">
               <SelectValue placeholder="Estado" />
             </SelectTrigger>
