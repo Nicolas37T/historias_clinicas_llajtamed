@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { LogIn, UserPlus, Info, AlertTriangle, ShieldCheck } from 'lucide-react'
+import { LogIn, UserPlus, Info, AlertTriangle, ShieldCheck, ClipboardPlus } from 'lucide-react'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -55,32 +55,35 @@ function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md shadow-2xl border-0 bg-white/70 backdrop-blur-xl rounded-[2.5rem] overflow-hidden animate-in">
-      <CardHeader className="space-y-4 text-center pt-10 pb-6">
-        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-2 shadow-inner">
-          <ShieldCheck className="w-10 h-10" />
+    <Card className="w-full max-w-md shadow-2xl border-0 bg-white/80 backdrop-blur-xl rounded-[2.5rem] overflow-hidden animate-in">
+      <CardHeader className="space-y-6 text-center pt-12 pb-8 px-8 group">
+        <div className="mx-auto w-20 h-20 bg-[#002D5B] rounded-[1.75rem] flex items-center justify-center text-amber-400 relative overflow-hidden transition-transform duration-500 group-hover:scale-110">
+          <div className="absolute inset-0 brand-gradient opacity-20 pointer-events-none" />
+          <ClipboardPlus className="w-10 h-10 relative z-10 drop-shadow-lg" />
         </div>
-        <div className="space-y-1">
-          <CardTitle className="text-4xl font-black tracking-tight text-slate-900 leading-none">Bienvenido</CardTitle>
-          <CardDescription className="text-sm font-bold text-muted-foreground uppercase tracking-widest pt-1">
-            Plataforma LlajtaMed
+        <div className="space-y-2">
+          <CardTitle className="text-4xl font-black tracking-tight text-[#002D5B] leading-none">
+            Llajta<span className="brand-gradient-text">Med</span>
+          </CardTitle>
+          <CardDescription className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] pt-1">
+            Plataforma Clínica Digital
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="px-8 pb-8">
+      <CardContent className="px-10 pb-10">
         <form onSubmit={handleLogin} className="space-y-6">
           {message && (
-            <div className="bg-primary/5 p-4 rounded-2xl text-primary text-xs font-bold border border-primary/10 flex items-center gap-3 animate-in">
-              <Info className="w-5 h-5 shrink-0" /> {message}
+            <div className="bg-blue-50/50 p-4 rounded-2xl text-[#002D5B] text-xs font-bold border border-blue-100 flex items-center gap-3 animate-in shadow-sm">
+              <Info className="w-5 h-5 shrink-0 text-amber-500" /> {message}
             </div>
           )}
           {error && (
-            <div className="bg-destructive/5 p-4 rounded-2xl text-destructive text-xs font-bold border border-destructive/10 flex items-center gap-3 animate-in">
+            <div className="bg-red-50/50 p-4 rounded-2xl text-red-600 text-xs font-bold border border-red-100 flex items-center gap-3 animate-in shadow-sm">
               <AlertTriangle className="w-5 h-5 shrink-0" /> {error}
             </div>
           )}
-          <div className="space-y-2.5">
-            <Label htmlFor="email" className="text-[11px] font-black uppercase tracking-wider text-slate-400 ml-1">Correo Electrónico</Label>
+          <div className="space-y-3">
+            <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Correo Electrónico</Label>
             <Input
               id="email"
               type="email"
@@ -88,11 +91,11 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-white/50 focus:bg-white border-slate-100 transition-all h-12 rounded-xl font-medium"
+              className="bg-white h-14 rounded-2xl border-slate-200 focus:ring-[#002D5B]/10 font-bold text-slate-700 shadow-inner px-6"
             />
           </div>
-          <div className="space-y-2.5">
-            <Label htmlFor="password" dangerouslySetInnerHTML={{ __html: 'Contraseña' }} className="text-[11px] font-black uppercase tracking-wider text-slate-400 ml-1" />
+          <div className="space-y-3">
+            <Label htmlFor="password" dangerouslySetInnerHTML={{ __html: 'Contraseña' }} className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1" />
             <Input
               id="password"
               type="password"
@@ -100,33 +103,33 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-white/50 focus:bg-white border-slate-100 transition-all h-12 rounded-xl"
+              className="bg-white h-14 rounded-2xl border-slate-200 focus:ring-[#002D5B]/10 shadow-inner px-6"
             />
           </div>
           <Button
             type="submit"
-            className="w-full font-black shadow-xl shadow-primary/30 hover:shadow-primary/40 transition-all h-14 rounded-2xl text-lg bg-primary hover:bg-primary/90 gap-2"
+            className="w-full font-black shadow-2xl shadow-red-900/20 hover:shadow-red-900/30 transition-all h-16 rounded-[1.5rem] text-xl brand-gradient border-0 text-white gap-3 hover:scale-[1.02] active:scale-95"
             disabled={loading}
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
-              <LogIn className="w-5 h-5" />
+              <LogIn className="w-6 h-6 drop-shadow-md" />
             )}
             {loading ? 'Verificando...' : 'Entrar al Sistema'}
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-6 text-center bg-slate-50/50 py-8 px-8 border-t border-slate-100">
-        <p className="text-sm text-slate-600 font-medium">
+      <CardFooter className="flex flex-col space-y-7 text-center bg-[#002D5B]/5 py-10 px-10 border-t border-slate-100">
+        <p className="text-sm text-slate-500 font-bold">
           ¿Aún no tienes cuenta?{' '}
-          <Link href="/register" className="text-primary font-black hover:underline underline-offset-4 flex items-center justify-center gap-1.5 mt-1 transition-all hover:gap-2">
-            Regístrate aquí <UserPlus className="w-4 h-4" />
+          <Link href="/register" className="text-[#002D5B] font-black hover:underline underline-offset-4 flex items-center justify-center gap-1.5 mt-2 transition-all hover:scale-105">
+            Regístrate aquí <UserPlus className="w-5 h-5 text-amber-500" />
           </Link>
         </p>
         <div className="w-full">
-          <p className="text-[9px] uppercase tracking-[0.2em] text-slate-300 font-black">
-            Clinical History Engine v1.0
+          <p className="text-[9px] uppercase tracking-[0.4em] text-slate-300 font-black flex items-center justify-center gap-2">
+            <ShieldCheck className="w-3.5 h-3.5" /> Security Verified by LlajtaMed
           </p>
         </div>
       </CardFooter>
@@ -136,12 +139,12 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-transparent p-4 relative overflow-hidden">
-      {/* Background blobs for depth */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
+    <div className="flex min-h-screen items-center justify-center p-4 relative overflow-hidden bg-slate-50">
+      {/* Brand Background Elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#002D5B] rounded-full blur-[180px] opacity-20 pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] brand-gradient rounded-full blur-[150px] opacity-10 pointer-events-none" />
       
-      <Suspense fallback={<div className="animate-pulse font-black text-primary tracking-widest uppercase">Cargando...</div>}>
+      <Suspense fallback={<div className="animate-pulse font-black text-[#002D5B] tracking-[0.5em] uppercase text-2xl">Cargando...</div>}>
         <LoginForm />
       </Suspense>
     </div>

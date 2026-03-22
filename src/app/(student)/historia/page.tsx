@@ -21,7 +21,8 @@ import {
   LogOut,
   Save,
   CheckCircle2,
-  Clock
+  Clock,
+  HeartPulse
 } from 'lucide-react'
 
 export default function HistoriaPage() {
@@ -100,89 +101,103 @@ export default function HistoriaPage() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p className="font-bold text-primary animate-pulse">Cargando Historial...</p>
+      <div className="flex h-screen items-center justify-center bg-[#002D5B]">
+        <div className="flex flex-col items-center gap-6">
+          <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+          <p className="font-black text-white tracking-[0.2em] uppercase animate-pulse">Cargando Sistema...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
-      {/* Header Premium */}
-      <div className="w-full bg-white border-b shadow-sm sticky top-0 z-50 glass">
-        <div className="container mx-auto py-4 px-4 max-w-5xl flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="bg-primary/10 p-2 rounded-xl">
-              <ClipboardList className="w-6 h-6 text-primary" />
+    <div className="min-h-screen bg-slate-50/70 pb-24">
+      {/* Brand Header (Navy + Gradient Accent) */}
+      <div className="w-full bg-[#002D5B] text-white shadow-2xl sticky top-0 z-50 overflow-hidden">
+        {/* Subtle top gradient bar */}
+        <div className="h-1.5 w-full brand-gradient opacity-80" />
+        
+        <div className="container mx-auto py-5 px-6 max-w-6xl flex justify-between items-center relative">
+          {/* Background Glow */}
+          <div className="absolute top-[-50%] right-[-10%] w-[30%] h-[200%] bg-amber-500/10 blur-[60px] rounded-full rotate-45 pointer-events-none" />
+          
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="bg-white/10 p-2.5 rounded-2xl backdrop-blur-md border border-white/20">
+              <ClipboardList className="w-7 h-7 text-amber-400" />
             </div>
             <div>
-              <h1 className="text-xl font-black text-slate-800 tracking-tight leading-none">LlajtaMed</h1>
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold font-heading">Historia Clínica Digital</p>
+              <h1 className="text-2xl font-black tracking-tight leading-none">
+                Llajta<span className="brand-gradient-text">Med</span>
+              </h1>
+              <p className="text-[9px] uppercase tracking-[0.3em] opacity-60 font-black mt-1">Clinical History Core</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          
+          <div className="flex items-center gap-6 relative z-10">
             {history.estado === 'revisado' ? (
-              <Badge className="bg-green-500 text-white border-0 px-4 py-1.5 rounded-full text-xs font-black shadow-lg shadow-green-200 animate-in">
-                <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" /> REVISADO
+              <Badge className="bg-green-500 hover:bg-green-600 text-white border-0 px-5 py-2 rounded-full text-[11px] font-black shadow-lg shadow-green-900/40">
+                <CheckCircle2 className="w-4 h-4 mr-2" /> REVISADO
               </Badge>
             ) : (
-              <Badge className="bg-amber-500 text-white border-0 px-4 py-1.5 rounded-full text-xs font-black shadow-lg shadow-amber-200 animate-in">
-                <Clock className="w-3.5 h-3.5 mr-1.5" /> PENDIENTE
+              <Badge className="brand-gradient text-white border-0 px-5 py-2 rounded-full text-[11px] font-black shadow-lg shadow-red-900/40 animate-pulse">
+                <Clock className="w-4 h-4 mr-2" /> PENDIENTE
               </Badge>
             )}
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-slate-500 hover:text-destructive hover:bg-destructive/5 font-bold transition-all gap-2">
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">Salir</span>
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-white/60 hover:text-white hover:bg-white/10 font-black transition-all gap-2 text-xs uppercase tracking-widest">
+              <LogOut className="w-4 h-4 text-amber-400" />
+              <span className="hidden md:inline">Cerrar Sesión</span>
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto mt-8 px-4 max-w-5xl animate-in">
-        <div className="mb-8">
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Registro de Paciente</h2>
-          <p className="text-slate-500 font-medium">Completa la información detallada para la evaluación docente.</p>
+      <div className="container mx-auto mt-12 px-6 max-w-6xl animate-in">
+        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-3">
+              <HeartPulse className="w-3.5 h-3.5 shadow-sm" /> Módulo Estudiante
+            </div>
+            <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-tight">Registro de Historia Clínica</h2>
+            <p className="text-slate-500 font-medium text-lg mt-2">Bienvenido, {history.nombre_completo}. Por favor completa todos los campos para la revisión docente.</p>
+          </div>
         </div>
 
-        <Tabs defaultValue="personales" className="flex flex-col space-y-8">
-          <TabsList className="flex flex-wrap md:flex-nowrap gap-2 bg-transparent h-auto p-0 border-0">
-            <TabItem value="personales" icon={<User className="w-4 h-4" />} label="Personales" />
-            <TabItem value="motivo" icon={<Activity className="w-4 h-4" />} label="Motivo" />
-            <TabItem value="antecedentes" icon={<HistoryIcon className="w-4 h-4" />} label="Antecedentes" />
-            <TabItem value="examen" icon={<Stethoscope className="w-4 h-4" />} label="Examen Físico" />
-            <TabItem value="diagnostico" icon={<CheckCircle2 className="w-4 h-4" />} label="Diagnóstico" />
+        <Tabs defaultValue="personales" className="flex flex-col space-y-10">
+          <TabsList className="flex flex-wrap md:flex-nowrap gap-3 bg-white/50 backdrop-blur-md h-auto p-2 border border-slate-200/60 rounded-[1.5rem] shadow-sm overflow-x-auto no-scrollbar">
+            <TabItem value="personales" icon={<User />} label="Personales" />
+            <TabItem value="motivo" icon={<Activity />} label="Motivo" />
+            <TabItem value="antecedentes" icon={<HistoryIcon />} label="Antecedentes" />
+            <TabItem value="examen" icon={<Stethoscope />} label="Examen Físico" />
+            <TabItem value="diagnostico" icon={<CheckCircle2 />} label="Diagnóstico" />
           </TabsList>
 
-          <Card className="border-0 shadow-2xl shadow-slate-200/60 bg-white rounded-[2rem] overflow-hidden">
-            <CardContent className="p-8 md:p-12">
-              <TabsContent value="personales" className="mt-0 space-y-8 animate-in">
-                <SectionHeader icon={<User />} title="Información Personal" subtitle="Datos básicos y de contacto del paciente." />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <FormItem label="Nombre Completo" icon={<User className="w-3.5 h-3.5" />}>
+          <Card className="border-0 shadow-2xl shadow-blue-900/10 bg-white rounded-[2.5rem] overflow-hidden">
+            <CardContent className="p-8 md:p-14">
+              <TabsContent value="personales" className="mt-0 space-y-10 animate-in">
+                <SectionHeader icon={<User />} title="Datos del Paciente" subtitle="Información sociodemográfica básica." />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <FormItem label="Nombre Completo" icon={<User />}>
                     <Input 
                       value={history.nombre_completo || ''} 
                       onChange={e => setHistory({...history, nombre_completo: e.target.value})}
                       placeholder="Ej. Juan Pérez"
-                      className="h-12 border-slate-200 bg-slate-50/50 focus:bg-white transition-all rounded-xl font-medium"
+                      className="h-14 border-slate-200 bg-slate-50/30 focus:bg-white focus:ring-primary/20 transition-all rounded-2xl font-bold text-slate-700"
                     />
                   </FormItem>
                   <FormItem label="Cédula de Identidad">
                     <Input 
                       value={history.cedula || ''} 
                       onChange={e => setHistory({...history, cedula: e.target.value})}
-                      className="h-12 border-slate-200 bg-slate-50/50 focus:bg-white rounded-xl"
+                      className="h-14 border-slate-200 bg-slate-50/30 font-bold rounded-2xl px-6"
                     />
                   </FormItem>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-6">
                     <FormItem label="Nacimiento">
                       <Input 
                         type="date" 
                         value={history.fecha_nacimiento || ''} 
                         onChange={e => setHistory({...history, fecha_nacimiento: e.target.value})}
-                        className="h-12 border-slate-200 bg-slate-50/50 rounded-xl"
+                        className="h-14 border-slate-200 rounded-2xl bg-slate-50/30"
                       />
                     </FormItem>
                     <FormItem label="Edad">
@@ -190,7 +205,7 @@ export default function HistoriaPage() {
                         type="number" 
                         value={history.edad || ''} 
                         onChange={e => setHistory({...history, edad: parseInt(e.target.value)})}
-                        className="h-12 border-slate-200 bg-slate-50/50 rounded-xl"
+                        className="h-14 border-slate-200 rounded-2xl bg-slate-50/30 text-center font-black"
                       />
                     </FormItem>
                   </div>
@@ -199,42 +214,42 @@ export default function HistoriaPage() {
                       value={history.sexo || ''} 
                       onValueChange={v => setHistory({...history, sexo: v as any})}
                     >
-                      <SelectTrigger className="h-12 border-slate-200 bg-slate-50/50 rounded-xl">
+                      <SelectTrigger className="h-14 border-slate-200 bg-slate-50/30 rounded-2xl font-bold text-slate-700">
                         <SelectValue placeholder="Seleccionar..." />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="masculino">Masculino</SelectItem>
-                        <SelectItem value="femenino">Femenino</SelectItem>
-                        <SelectItem value="otro">Otro</SelectItem>
+                      <SelectContent className="rounded-2xl shadow-2xl border-slate-100">
+                        <SelectItem value="masculino" className="font-bold">Masculino</SelectItem>
+                        <SelectItem value="femenino" className="font-bold">Femenino</SelectItem>
+                        <SelectItem value="otro" className="font-bold">Otro</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
-                  <FormItem label="Teléfono de Contacto">
+                  <FormItem label="Teléfono">
                     <Input 
                       value={history.telefono || ''} 
                       onChange={e => setHistory({...history, telefono: e.target.value})}
-                      className="h-12 border-slate-200 bg-slate-50/50 rounded-xl"
+                      className="h-14 border-slate-200 rounded-2xl bg-slate-50/30 font-bold"
                     />
                   </FormItem>
-                  <FormItem label="Dirección de Domicilio">
+                  <FormItem label="Dirección">
                     <Input 
                       value={history.direccion || ''} 
                       onChange={e => setHistory({...history, direccion: e.target.value})}
-                      className="h-12 border-slate-200 bg-slate-50/50 rounded-xl"
+                      className="h-14 border-slate-200 rounded-2xl bg-slate-50/30 font-bold"
                     />
                   </FormItem>
                 </div>
               </TabsContent>
 
-              <TabsContent value="motivo" className="mt-0 space-y-8 animate-in">
-                <SectionHeader icon={<Activity />} title="Cuadro Clínico" subtitle="Detalles del motivo de la consulta." />
-                <div className="space-y-6">
-                  <FormItem label="Motivo de Consulta Principal">
+              <TabsContent value="motivo" className="mt-0 space-y-10 animate-in">
+                <SectionHeader icon={<Activity />} title="Cuadro Clínico" subtitle="Evaluación del síntoma principal." />
+                <div className="space-y-8">
+                  <FormItem label="Motivo de Consulta">
                     <Textarea 
                       value={history.motivo_consulta || ''} 
                       onChange={e => setHistory({...history, motivo_consulta: e.target.value})}
                       rows={4}
-                      className="border-slate-200 bg-slate-50/50 focus:bg-white rounded-2xl resize-none font-medium p-4 leading-relaxed"
+                      className="border-slate-200 bg-slate-50/30 focus:bg-white rounded-[2rem] p-6 font-bold text-slate-800 leading-relaxed shadow-inner"
                       placeholder="Describa el motivo principal..."
                     />
                   </FormItem>
@@ -243,49 +258,48 @@ export default function HistoriaPage() {
                       value={history.enfermedad_actual || ''} 
                       onChange={e => setHistory({...history, enfermedad_actual: e.target.value})}
                       rows={6}
-                      className="border-slate-200 bg-slate-50/50 focus:bg-white rounded-2xl resize-none p-4 leading-relaxed"
+                      className="border-slate-200 bg-slate-50/30 focus:bg-white rounded-[2rem] p-6 leading-relaxed"
                     />
                   </FormItem>
                 </div>
               </TabsContent>
 
-              <TabsContent value="antecedentes" className="mt-0 space-y-8 animate-in">
-                <SectionHeader icon={<HistoryIcon />} title="Historia Médica" subtitle="Antecedentes relevantes del paciente." />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <TabsContent value="antecedentes" className="mt-0 space-y-10 animate-in">
+                <SectionHeader icon={<HistoryIcon />} title="Antecedentes" subtitle="Antepasados y condiciones previas." />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <FormItem label="Antecedentes Personales">
                     <Textarea 
                       value={history.antecedentes_personales || ''} 
                       onChange={e => setHistory({...history, antecedentes_personales: e.target.value})}
-                      className="border-slate-200 bg-slate-50/50 rounded-2xl min-h-[120px]"
+                      className="border-slate-200 bg-slate-50/30 rounded-[2rem] min-h-[160px] p-6"
                     />
                   </FormItem>
                   <FormItem label="Antecedentes Familiares">
                     <Textarea 
                       value={history.antecedentes_familiares || ''} 
                       onChange={e => setHistory({...history, antecedentes_familiares: e.target.value})}
-                      className="border-slate-200 bg-slate-50/50 rounded-2xl min-h-[120px]"
+                      className="border-slate-200 bg-slate-50/30 rounded-[2rem] min-h-[160px] p-6"
                     />
                   </FormItem>
-                  <FormItem label="Alergias Conocidas">
+                  <FormItem label="Alergias">
                     <Input 
                       value={history.alergias || ''} 
                       onChange={e => setHistory({...history, alergias: e.target.value})}
-                      className="h-12 border-slate-200 bg-slate-50/50 rounded-xl font-bold text-destructive"
-                      placeholder="Ej. Penicilina, látex..."
+                      className="h-14 border-red-100 bg-red-50/30 rounded-2xl font-black text-red-600 focus:ring-red-500/10"
                     />
                   </FormItem>
-                  <FormItem label="Medicamentos de Uso Actual">
+                  <FormItem label="Medicamentos Actuales">
                     <Input 
                       value={history.medicamentos_actuales || ''} 
                       onChange={e => setHistory({...history, medicamentos_actuales: e.target.value})}
-                      className="h-12 border-slate-200 bg-slate-50/50 rounded-xl font-bold text-primary"
+                      className="h-14 border-blue-100 bg-blue-50/30 rounded-2xl font-black text-[#002D5B] focus:ring-blue-500/10"
                     />
                   </FormItem>
                 </div>
               </TabsContent>
 
-              <TabsContent value="examen" className="mt-0 space-y-8 animate-in">
-                <SectionHeader icon={<Stethoscope />} title="Signos Vitales" subtitle="Valores obtenidos en el examen físico inicial." />
+              <TabsContent value="examen" className="mt-0 space-y-10 animate-in">
+                <SectionHeader icon={<HeartPulse />} title="Examen Físico" subtitle="Signos vitales y hallazgos." />
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                   <VitalSignItem label="Peso (kg)" value={history.peso} onChange={v => setHistory({...history, peso: v})} step="0.1" />
                   <VitalSignItem label="Talla (m)" value={history.talla} onChange={v => setHistory({...history, talla: v})} step="0.01" />
@@ -295,30 +309,23 @@ export default function HistoriaPage() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="diagnostico" className="mt-0 space-y-8 animate-in">
-                <SectionHeader icon={<CheckCircle2 />} title="Diagnóstico y Plan" subtitle="Conclusión médica y pasos a seguir." />
-                <div className="space-y-8">
+              <TabsContent value="diagnostico" className="mt-0 space-y-10 animate-in">
+                <SectionHeader icon={<CheckCircle2 />} title="Diagnóstico / Plan" subtitle="Conclusión y seguimiento médico." />
+                <div className="space-y-10">
                   <FormItem label="Diagnóstico Presuntivo">
                     <Textarea 
                       value={history.diagnostico_presuntivo || ''} 
                       onChange={e => setHistory({...history, diagnostico_presuntivo: e.target.value})}
                       rows={4}
-                      className="border-slate-200 bg-slate-50/50 rounded-2xl p-4 font-bold text-indigo-950"
+                      className="border-[#002D5B]/20 bg-[#002D5B]/5 rounded-[2rem] p-8 font-black text-[#002D5B] text-xl tracking-tight leading-relaxed shadow-inner"
                     />
                   </FormItem>
                   <FormItem label="Plan de Tratamiento">
                     <Textarea 
                       value={history.plan_tratamiento || ''} 
                       onChange={e => setHistory({...history, plan_tratamiento: e.target.value})}
-                      rows={4}
-                      className="border-slate-200 bg-slate-50/50 rounded-2xl p-4"
-                    />
-                  </FormItem>
-                  <FormItem label="Observaciones Finales">
-                    <Textarea 
-                      value={history.observaciones || ''} 
-                      onChange={e => setHistory({...history, observaciones: e.target.value})}
-                      className="border-slate-200 bg-slate-50/50 rounded-2xl"
+                      rows={5}
+                      className="border-slate-200 bg-slate-50/30 rounded-[2rem] p-6 leading-relaxed"
                     />
                   </FormItem>
                 </div>
@@ -326,18 +333,18 @@ export default function HistoriaPage() {
             </CardContent>
           </Card>
 
-          {/* Botón Flotante de Guardado */}
-          <div className="fixed bottom-8 left-0 right-0 z-40 px-4 md:px-0 flex justify-center pointer-events-none">
+          {/* Floating Action Button - Branded Gradient */}
+          <div className="fixed bottom-10 left-0 right-0 z-40 px-6 flex justify-center pointer-events-none">
             <Button 
               size="lg" 
               onClick={handleSave} 
               disabled={saving}
-              className="pointer-events-auto h-14 px-12 rounded-full font-black text-lg shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all gap-2 bg-primary hover:bg-primary/90"
+              className="pointer-events-auto h-16 px-16 rounded-full font-black text-xl shadow-2xl shadow-red-900/30 hover:scale-105 active:scale-95 transition-all gap-3 brand-gradient border-0 text-white"
             >
               {saving ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                <Save className="w-5 h-5" />
+                <Save className="w-6 h-6 drop-shadow-md" />
               )}
               {saving ? 'Guardando...' : 'Guardar Información'}
             </Button>
@@ -352,23 +359,25 @@ function TabItem({ value, icon, label }: { value: string; icon: React.ReactNode;
   return (
     <TabsTrigger 
       value={value} 
-      className="flex-1 min-w-[120px] md:min-w-0 py-3 font-bold rounded-2xl transition-all gap-2 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 border-2 border-transparent hover:bg-white hover:border-slate-100"
+      className="flex-1 min-w-[130px] md:min-w-0 py-4 font-black rounded-2xl transition-all gap-2.5 data-[state=active]:bg-[#002D5B] data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-900/20 data-[state=inactive]:text-slate-500 hover:bg-white hover:text-[#002D5B] hover:shadow-md border border-transparent"
     >
-      {icon}
-      <span className="hidden sm:inline">{label}</span>
+      <div className="group-data-[state=active]:text-amber-400 transition-colors">
+        {icon}
+      </div>
+      <span className="hidden sm:inline uppercase text-[10px] tracking-widest">{label}</span>
     </TabsTrigger>
   )
 }
 
 function SectionHeader({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
   return (
-    <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
-      <div className="bg-primary/5 p-3 rounded-2xl text-primary">
+    <div className="flex items-center gap-6 pb-8 border-b border-slate-100/80">
+      <div className="bg-[#002D5B] text-amber-400 p-4 rounded-2xl shadow-lg shadow-blue-900/10">
         {icon}
       </div>
       <div>
-        <h3 className="text-xl font-black text-slate-800 tracking-tight">{title}</h3>
-        <p className="text-sm text-slate-500 font-medium">{subtitle}</p>
+        <h3 className="text-2xl font-black text-[#002D5B] tracking-tight">{title}</h3>
+        <p className="text-base text-slate-400 font-semibold">{subtitle}</p>
       </div>
     </div>
   )
@@ -376,8 +385,8 @@ function SectionHeader({ icon, title, subtitle }: { icon: React.ReactNode; title
 
 function FormItem({ label, icon, children }: { label: string; icon?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="space-y-2.5">
-      <Label className="text-[11px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-1.5 ml-1">
+    <div className="space-y-3">
+      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2 ml-1">
         {icon} {label}
       </Label>
       {children}
@@ -387,16 +396,19 @@ function FormItem({ label, icon, children }: { label: string; icon?: React.React
 
 function VitalSignItem({ label, value, onChange, isString, step, placeholder }: { label: string; value: any; onChange: (v: any) => void; isString?: boolean; step?: string; placeholder?: string }) {
   return (
-    <div className="space-y-2">
-      <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 text-center block">{label}</Label>
-      <Input 
-        type={isString ? "text" : "number"}
-        step={step}
-        placeholder={placeholder}
-        value={value || ''} 
-        onChange={e => onChange(isString ? e.target.value : parseFloat(e.target.value))}
-        className="h-12 border-slate-200 bg-white shadow-inner text-center font-black text-lg focus:ring-primary/20 rounded-xl"
-      />
+    <div className="space-y-3">
+      <Label className="text-[9px] font-black uppercase tracking-widest text-slate-400 text-center block">{label}</Label>
+      <div className="relative group">
+        <Input 
+          type={isString ? "text" : "number"}
+          step={step}
+          placeholder={placeholder}
+          value={value || ''} 
+          onChange={e => onChange(isString ? e.target.value : parseFloat(e.target.value))}
+          className="h-16 border-slate-200 bg-slate-50/50 shadow-inner text-center font-black text-2xl focus:ring-[#002D5B]/10 rounded-2xl transition-all"
+        />
+        <div className="absolute bottom-0 left-0 right-0 h-1 brand-gradient scale-x-0 group-focus-within:scale-x-100 transition-transform duration-500 rounded-b-2xl" />
+      </div>
     </div>
   )
 }

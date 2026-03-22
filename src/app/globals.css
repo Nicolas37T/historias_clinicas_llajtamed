@@ -59,27 +59,36 @@
 
 @layer base {
   :root {
-    /* Vibrant Medical Theme */
-    --background: 210 40% 98.5%;
-    --foreground: 224 71.4% 4.1%;
+    /* Brand-specific Theme (LlajtaMed) */
+    --background: 210 20% 98%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 221.2 83.2% 53.3%;
+    --popover-foreground: 222.2 84% 4.9%;
+    
+    /* Deep Navy Primary */
+    --primary: 215 100% 18%; /* #002D5B equivalent */
     --primary-foreground: 210 40% 98%;
+    
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    
+    /* Amber Accent */
+    --accent: 45 100% 50%; /* #FFC107 equivalent */
     --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+    
+    /* Medical Red Destructive */
+    --destructive: 0 84.2% 60.2%; /* #EF4444 equivalent */
     --destructive-foreground: 210 40% 98%;
+    
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 1rem;
+    --ring: 215 100% 18%;
+    --radius: 1.25rem;
+    
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -95,31 +104,40 @@
   body {
     @apply bg-background text-foreground font-sans;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(147, 51, 234, 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(0, 45, 91, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(255, 193, 7, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(239, 68, 68, 0.05) 0px, transparent 50%);
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;
   }
 }
 
+.brand-gradient {
+  background: linear-gradient(135deg, #FFC107 0%, #EF4444 100%);
+}
+
+.brand-gradient-text {
+  background: linear-gradient(135deg, #FFC107 0%, #EF4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .animate-in {
-  animation: animate-in 0.5s ease-out forwards;
+  animation: animate-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes animate-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;

@@ -19,7 +19,9 @@ import {
   Stethoscope,
   HeartPulse,
   Save,
-  ChevronRight
+  ChevronRight,
+  ShieldAlert,
+  FileText
 } from 'lucide-react'
 
 export default function DetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -62,128 +64,139 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
   }
 
   if (loading) return (
-    <div className="flex h-screen items-center justify-center bg-background">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent shadow-xl shadow-primary/20"></div>
+    <div className="flex h-screen items-center justify-center bg-[#002D5B]">
+      <div className="flex flex-col items-center gap-6">
+        <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="font-black text-white tracking-[0.2em] uppercase animate-pulse">Abriendo Expediente...</p>
+      </div>
     </div>
   )
   
   if (!history) return <div className="p-10 text-center font-bold text-slate-400">Historia no encontrada.</div>
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
-      {/* Detail Header */}
-      <div className="w-full bg-white border-b shadow-sm sticky top-0 z-50 glass">
-        <div className="container mx-auto py-4 px-4 max-w-5xl flex justify-between items-center">
-          <Button variant="ghost" onClick={() => router.back()} className="font-bold gap-2 text-slate-500 hover:text-primary transition-all">
-            <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Volver</span>
+    <div className="min-h-screen bg-slate-50/70 pb-24">
+      {/* Detail Header (Branded Navy) */}
+      <div className="w-full bg-[#002D5B] text-white shadow-2xl sticky top-0 z-50 overflow-hidden">
+        <div className="h-1.5 w-full brand-gradient opacity-80" />
+        <div className="container mx-auto py-5 px-6 max-w-5xl flex justify-between items-center relative">
+          <Button variant="ghost" onClick={() => router.back()} className="font-black gap-3 text-white/60 hover:text-white hover:bg-white/10 transition-all uppercase text-xs tracking-widest">
+            <ArrowLeft className="w-5 h-5 text-amber-400" /> <span className="hidden sm:inline">Volver</span>
           </Button>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="hidden sm:block text-right">
-              <h1 className="text-sm font-black text-slate-800 tracking-tight leading-none uppercase">{history.nombre_completo}</h1>
-              <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest mt-0.5">Carnet: {history.profiles?.carnet || '-'}</p>
+              <h1 className="text-sm font-black text-white tracking-widest leading-none uppercase">{history.nombre_completo}</h1>
+              <p className="text-[9px] uppercase font-bold text-white/40 tracking-[0.3em] mt-1.5 italic">Expediente LlajtaMed No. {id.slice(0, 8)}</p>
             </div>
-            <div className="h-10 w-px bg-slate-100 hidden sm:block mx-2" />
+            <div className="h-10 w-px bg-white/10 hidden sm:block mx-2" />
             {history.estado === 'revisado' ? (
-              <Badge className="bg-green-500 text-white border-0 px-4 py-1.5 rounded-full text-xs font-black shadow-lg shadow-green-200">
-                <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" /> REVISADO
+              <Badge className="bg-green-500 text-white border-0 px-5 py-2 rounded-full text-[10px] font-black shadow-lg shadow-green-900/40">
+                <CheckCircle2 className="w-4 h-4 mr-2" /> REVISADO
               </Badge>
             ) : (
-              <Badge className="bg-amber-500 text-white border-0 px-4 py-1.5 rounded-full text-xs font-black shadow-lg shadow-amber-200">
-                <Clock className="w-3.5 h-3.5 mr-1.5" /> PENDIENTE
+              <Badge className="brand-gradient text-white border-0 px-5 py-2 rounded-full text-[10px] font-black shadow-lg shadow-red-900/40 animate-pulse">
+                <Clock className="w-4 h-4 mr-2" /> PENDIENTE
               </Badge>
             )}
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto mt-10 px-4 max-w-5xl animate-in">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+      <div className="container mx-auto mt-12 px-6 max-w-5xl animate-in">
+        <div className="flex flex-col lg:flex-row gap-10 items-start">
           
-          {/* Main Content */}
-          <div className="flex-1 space-y-8 w-full">
-            <Section title="Información Personal" icon={<User />}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+          {/* Main Content - Clinical Report Style */}
+          <div className="flex-1 space-y-10 w-full">
+            <Section title="Evaluación Sociodemográfica" icon={<User />}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-10">
                 <InfoItem label="Nombre Completo" value={history.nombre_completo} />
-                <InfoItem label="C.I." value={history.cedula} />
-                <InfoItem label="Fecha Nacimiento" value={history.fecha_nacimiento} />
-                <InfoItem label="Edad" value={history.edad?.toString()} />
-                <InfoItem label="Sexo" value={history.sexo} className="capitalize" />
-                <InfoItem label="Teléfono" value={history.telefono} />
-                <InfoItem label="Dirección" value={history.direccion} fullWidth />
+                <InfoItem label="Cédula de Identidad" value={history.cedula} />
+                <InfoItem label="Fecha de Nacimiento" value={history.fecha_nacimiento} />
+                <InfoItem label="Edad Biológica" value={history.edad?.toString() + ' años'} />
+                <InfoItem label="Identidad de Género" value={history.sexo} className="capitalize" />
+                <InfoItem label="Contacto Telefónico" value={history.telefono} />
+                <InfoItem label="Dirección Residencial" value={history.direccion} fullWidth />
               </div>
             </Section>
 
-            <Section title="Motivo de Consulta y Enfermedad Actual" icon={<Clipboard />}>
-              <div className="space-y-6">
+            <Section title="Motivo de Ingreso y Evolución" icon={<FileText />}>
+              <div className="space-y-10">
                 <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Motivo de Consulta</h4>
-                  <div className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100 font-bold text-slate-800 leading-relaxed shadow-inner">
-                    {history.motivo_consulta || 'Sin información.'}
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#002D5B] mb-3 ml-1 flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4 text-amber-500" /> Motivo Principal de Consulta
+                  </h4>
+                  <div className="p-6 bg-slate-50/80 rounded-[2rem] border border-slate-200 font-bold text-[#002D5B] text-lg leading-relaxed shadow-inner italic">
+                    {history.motivo_consulta || 'N/A'}
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Historia de la Enfermedad Actual</h4>
-                  <div className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100 text-slate-700 leading-relaxed shadow-inner whitespace-pre-wrap">
-                    {history.enfermedad_actual || 'Sin información.'}
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 ml-1">Historia Cronológica de la Enfermedad Actual</h4>
+                  <div className="p-8 bg-white rounded-[2rem] border border-slate-100 text-slate-600 font-medium leading-[1.8] shadow-sm whitespace-pre-wrap">
+                    {history.enfermedad_actual || 'Sin registros médicos detallados.'}
                   </div>
                 </div>
               </div>
             </Section>
 
-            <Section title="Antecedentes" icon={<HistoryIcon />}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-5 bg-indigo-50/30 rounded-2xl border border-indigo-100">
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-indigo-400 mb-2 flex items-center gap-2">
-                    <User className="w-3 h-3" /> Personales
+            <Section title="Módulo de Antecedentes" icon={<HistoryIcon />}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="p-8 bg-[#002D5B]/[0.02] rounded-[2rem] border border-[#002D5B]/5">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#002D5B] mb-4 flex items-center gap-2">
+                    <User className="w-3.5 h-3.5" /> Personales Patológicos
                   </h4>
-                  <p className="text-sm font-medium text-indigo-900 leading-relaxed">{history.antecedentes_personales || '-'}</p>
+                  <p className="text-sm font-bold text-slate-800 leading-relaxed">{history.antecedentes_personales || '-'}</p>
                 </div>
-                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-2">
-                    <Users className="w-3 h-3" /> Familiares
+                <div className="p-8 bg-slate-50/50 rounded-[2rem] border border-slate-100">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                    <Users className="w-3.5 h-3.5" /> Antecedentes Familiares
                   </h4>
-                  <p className="text-sm font-medium text-slate-700 leading-relaxed">{history.antecedentes_familiares || '-'}</p>
+                  <p className="text-sm font-medium text-slate-600 leading-relaxed">{history.antecedentes_familiares || '-'}</p>
                 </div>
-                <div className="col-span-full grid grid-cols-2 gap-6">
-                  <div className="p-4 bg-destructive/[0.03] rounded-2xl border border-destructive/10">
-                    <h4 className="text-[11px] font-black uppercase tracking-widest text-destructive mb-1">Alergias</h4>
-                    <p className="font-black text-destructive tracking-tight">{history.alergias || 'Ninguna conocida'}</p>
+                <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="p-6 bg-red-50/50 rounded-2xl border border-red-100">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-1.5">Alergias Detectadas</h4>
+                    <p className="font-black text-red-700 text-lg tracking-tight uppercase">{history.alergias || 'Ninguna'}</p>
                   </div>
-                  <div className="p-4 bg-primary/[0.03] rounded-2xl border border-primary/10">
-                    <h4 className="text-[11px] font-black uppercase tracking-widest text-primary mb-1">Medicamentos</h4>
-                    <p className="font-black text-primary tracking-tight">{history.medicamentos_actuales || 'Ninguno'}</p>
+                  <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#002D5B] mb-1.5">Farmacología Actual</h4>
+                    <p className="font-black text-[#002D5B] text-lg tracking-tight uppercase">{history.medicamentos_actuales || 'Ninguno'}</p>
                   </div>
                 </div>
               </div>
             </Section>
 
-            <Section title="Examen Físico (Signos Vitales)" icon={<HeartPulse />}>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <VitalBox label="Peso" value={history.peso} unit="kg" />
-                <VitalBox label="Talla" value={history.talla} unit="m" />
-                <VitalBox label="P. Arterial" value={history.tension_arterial} />
-                <VitalBox label="F.C." value={history.frecuencia_cardiaca} unit="lpm" />
-                <VitalBox label="Temp" value={history.temperatura} unit="°C" />
+            <Section title="Monitorización de Signos Vitales" icon={<HeartPulse />}>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+                <VitalBox label="Peso" value={history.peso} unit="kg" color="amber" />
+                <VitalBox label="Talla" value={history.talla} unit="m" color="amber" />
+                <VitalBox label="P. Arterial" value={history.tension_arterial} color="red" />
+                <VitalBox label="F.C." value={history.frecuencia_cardiaca} unit="lpm" color="red" />
+                <VitalBox label="Temperatura" value={history.temperatura} unit="°C" color="red" />
               </div>
             </Section>
 
-            <Section title="Diagnóstico y Plan" icon={<CheckCircle2 />}>
-              <div className="space-y-6">
-                <div className="p-6 bg-slate-900 rounded-[2rem] text-white shadow-xl shadow-slate-200">
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-3 ml-1">Diagnóstico Presuntivo</h4>
-                  <p className="text-xl font-black text-indigo-100 tracking-tight leading-relaxed">{history.diagnostico_presuntivo || 'Pendiente de evaluación.'}</p>
+            <Section title="Diagnóstico Presuntivo y Planificación" icon={<CheckCircle2 />}>
+              <div className="space-y-10">
+                <div className="relative group overflow-hidden rounded-[2.5rem]">
+                   <div className="absolute inset-0 brand-gradient opacity-10 group-hover:opacity-20 transition-opacity" />
+                   <div className="relative p-10 bg-[#002D5B] text-white shadow-2xl shadow-blue-900/40">
+                    <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-amber-400 mb-4 ml-1">Análisis Clínico / Diagnóstico PPS</h4>
+                    <p className="text-3xl font-black text-white tracking-tight leading-snug">{history.diagnostico_presuntivo || 'Pendiente de evaluación profesional.'}</p>
+                  </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Plan de Tratamiento</h4>
-                    <div className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-sm font-medium text-slate-600 leading-relaxed min-h-[100px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#002D5B] ml-2 flex items-center gap-2">
+                       <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> Plan de Tratamiento
+                    </h4>
+                    <div className="p-8 bg-white border border-slate-100 rounded-[2rem] shadow-sm text-base font-bold text-slate-700 leading-relaxed min-h-[160px]">
                       {history.plan_tratamiento || '-'}
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">Observaciones</h4>
-                    <div className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-sm font-medium text-slate-600 leading-relaxed min-h-[100px]">
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Observaciones Clínicas</h4>
+                    <div className="p-8 bg-slate-50/50 border border-slate-100 rounded-[2rem] shadow-inner text-base font-medium text-slate-500 leading-relaxed min-h-[160px]">
                       {history.observaciones || '-'}
                     </div>
                   </div>
@@ -192,41 +205,47 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
             </Section>
           </div>
 
-          {/* Admin Sidebar Action */}
-          <div className="w-full md:w-80 sticky top-28 space-y-6">
-            <Card className="border-0 shadow-2xl shadow-slate-200/50 bg-white rounded-[2rem] overflow-hidden group">
-              <CardHeader className="bg-slate-50/50 border-b border-slate-100 pt-8 pb-6 text-center">
-                <CardTitle className="text-sm font-black uppercase tracking-widest text-slate-800">Acción Docente</CardTitle>
+          {/* Branded Sidebar - Admin Control */}
+          <div className="w-full lg:w-96 sticky top-28 space-y-10">
+            <Card className="border-0 shadow-2xl shadow-blue-900/10 bg-white rounded-[2.5rem] overflow-hidden group">
+              <CardHeader className="bg-[#002D5B]/[0.02] border-b border-slate-50 pt-10 pb-8 text-center px-10">
+                <CardTitle className="text-xs font-black uppercase tracking-[0.4em] text-[#002D5B]">Validación Docente</CardTitle>
               </CardHeader>
-              <CardContent className="p-8 space-y-6">
-                <p className="text-sm text-center text-slate-500 font-medium leading-relaxed">
-                  Cambia el estado de la historia una vez finalizada la revisión detallada.
+              <CardContent className="p-10 space-y-8">
+                <p className="text-sm text-center text-slate-400 font-black uppercase tracking-widest leading-relaxed">
+                  Autorización de Expedientes Clínicos
                 </p>
                 <Button 
                   onClick={toggleStatus} 
                   disabled={updating}
-                  className={`w-full h-14 rounded-2xl font-black text-base shadow-xl transition-all group-active:scale-95 ${
+                  className={`w-full h-16 rounded-[1.75rem] font-black text-lg shadow-2xl transition-all active:scale-95 border-0 ${
                     history.estado === 'pendiente' 
-                      ? 'bg-green-500 hover:bg-green-600 shadow-green-200' 
-                      : 'bg-amber-500 hover:bg-amber-600 shadow-amber-200'
+                      ? 'bg-green-600 hover:bg-green-700 text-white shadow-green-900/20' 
+                      : 'bg-amber-500 hover:bg-amber-600 text-white shadow-red-900/20'
                   }`}
                 >
                   {updating ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-7 h-7 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
                   ) : (
                     <>
-                      {history.estado === 'pendiente' ? <CheckCircle2 className="w-5 h-5 mr-2" /> : <Clock className="w-5 h-5 mr-2" />}
-                      {history.estado === 'pendiente' ? 'MARCAR REVISADO' : 'MARCAR PENDIENTE'}
+                      {history.estado === 'pendiente' ? <CheckCircle2 className="w-6 h-6 mr-3" /> : <Clock className="w-6 h-6 mr-3" />}
+                      {history.estado === 'pendiente' ? 'APROBAR REVISIÓN' : 'REABRIR CASO'}
                     </>
                   )}
                 </Button>
+                <div className="text-center">
+                  <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+                    Auditado por LlajtaMed OS
+                  </p>
+                </div>
               </CardContent>
             </Card>
 
-            <div className="bg-primary/5 p-6 rounded-[2rem] border border-primary/10">
-              <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 text-center">Ayuda Docente</p>
-              <p className="text-xs text-center text-primary/70 font-semibold leading-relaxed">
-                Revisa los signos vitales y el diagnóstico presuntivo para validar el progreso clínico del estudiante.
+            <div className="bg-[#002D5B] p-8 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
+              <div className="absolute inset-0 brand-gradient opacity-10 group-hover:opacity-20 transition-opacity" />
+              <p className="text-[11px] font-black uppercase tracking-[0.4em] text-amber-400 mb-4 text-center relative z-10">Inteligencia Clínica</p>
+              <p className="text-xs text-center text-white/70 font-bold leading-[1.8] relative z-10 italic">
+                "La precisión en la historia clínica es el primer paso hacia la excelencia médica."
               </p>
             </div>
           </div>
@@ -238,14 +257,17 @@ export default function DetailPage({ params }: { params: Promise<{ id: string }>
 
 function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   return (
-    <Card className="border-0 shadow-xl shadow-slate-200/40 bg-white rounded-[2.5rem] overflow-hidden group hover:shadow-2xl transition-all duration-500">
-      <CardHeader className="flex flex-row items-center gap-4 py-8 px-8 border-b border-slate-50">
-        <div className="bg-primary/10 p-3 rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+    <Card className="border-0 shadow-2xl shadow-blue-900/10 bg-white rounded-[3rem] overflow-hidden group hover:shadow-blue-900/20 transition-all duration-700">
+      <CardHeader className="flex flex-row items-center gap-6 py-10 px-10 border-b border-slate-50">
+        <div className="bg-[#002D5B] text-amber-400 p-4 rounded-2xl shadow-xl shadow-blue-900/10 group-hover:scale-110 transition-transform duration-500">
           {icon}
         </div>
-        <CardTitle className="text-2xl font-black text-slate-900 tracking-tight tracking-normal">{title}</CardTitle>
+        <div>
+          <CardTitle className="text-3xl font-black text-[#002D5B] tracking-tight">{title}</CardTitle>
+          <div className="h-1 w-12 brand-gradient rounded-full mt-1 group-hover:w-24 transition-all duration-700" />
+        </div>
       </CardHeader>
-      <CardContent className="p-10">
+      <CardContent className="p-12">
         {children}
       </CardContent>
     </Card>
@@ -254,22 +276,40 @@ function Section({ title, icon, children }: { title: string; icon: React.ReactNo
 
 function InfoItem({ label, value, fullWidth, className }: { label: string; value: string | null | undefined; fullWidth?: boolean; className?: string }) {
   return (
-    <div className={`space-y-1.5 ${fullWidth ? 'col-span-full' : ''}`}>
-      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block ml-1">{label}</span>
-      <div className={`text-base font-bold text-slate-800 bg-slate-50/50 p-2.5 px-4 rounded-xl border border-slate-100 ${className}`}>
+    <div className={`space-y-2 ${fullWidth ? 'col-span-full' : ''}`}>
+      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 block ml-2">{label}</span>
+      <div className={`text-base font-black text-[#002D5B] bg-slate-50/70 p-4 px-6 rounded-2xl border border-slate-100 group-hover:border-[#002D5B]/10 transition-colors ${className}`}>
         {value || '-'}
       </div>
     </div>
   )
 }
 
-function VitalBox({ label, value, unit }: { label: string; value: any; unit?: string }) {
+function VitalBox({ label, value, unit, color }: { label: string; value: any; unit?: string; color: 'amber' | 'red' }) {
+  const colorClass = color === 'amber' ? 'text-amber-500' : 'text-red-500'
+  
   return (
-    <div className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-center group hover:bg-slate-50 transition-colors">
-      <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">{label}</p>
-      <p className="text-xl font-black text-primary tracking-tighter">
+    <div className="p-6 bg-white border border-slate-100 rounded-[2rem] shadow-sm text-center group/vital hover:shadow-md transition-all">
+      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 truncate">{label}</p>
+      <div className={`text-2xl font-black tracking-tighter ${colorClass} group-hover/vital:scale-110 transition-transform`}>
         {value || '-'} <span className="text-xs text-slate-300 ml-0.5">{unit}</span>
-      </p>
+      </div>
     </div>
+  )
+}
+
+function Zap({ className }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
   )
 }
