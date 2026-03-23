@@ -32,7 +32,9 @@ function LoginForm() {
     })
 
     if (loginError) {
-      setError('Credenciales inválidas. Verifica tu correo y contraseña.')
+      setError(loginError.message === 'Invalid login credentials' 
+        ? 'Credenciales inválidas. Verifica tu correo y contraseña.' 
+        : loginError.message)
       setLoading(false)
       return
     }
